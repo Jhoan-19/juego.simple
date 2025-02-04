@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reto del Reflejo</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        #gameArea {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+        #circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: red;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Juego del Reflejo</h1>
+    <p>Haz clic en la pantalla tan pronto como aparezca el círculo.</p>
+    <button onclick="startGame()">Iniciar Juego</button>
+    <p id="message"></p>
+    <div id="gameArea" onclick="checkClick()">
+        <div id="circle"></div>
+    </div>
+
+    <script>
+        let startTime, circleTimeout;
+        let isCircleVisible = false;
+
+        function startGame() {
+            document.getElementById('message').textContent = "Espera que aparezca el círculo...";
+            isCircleVisible = false;
+            clearTimeout(circleTimeout);
+            
+            let delay = Math.random() * 3000 + 2000; // Entre 2 y 5 segundos
+            circleTimeout = setTimeout(() => {
+                document.getElementById('circle').style.display = 'block';
+                startTime = new Date().getTime();
+                isCircleVisible = true;
+            }, delay);
+        }
+
+        function checkClick() {
+            let now = new Date().getTime();
+            if (!isCircleVisible) {
+                document.getElementById('message').textContent = "¡No te adelantes! Perdiste.";
+                clearTimeout(circleTimeout);
+            } else {
+                let reactionTime = now - startTime;
+                document.getElementById('message').textContent = `¡Bien hecho! Tiempo de reacción: ${reactionTime} ms`;
+                document.getElementById('circle').style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
